@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Para o amor da minha vida</title>
   <style>
     html, body {
@@ -10,14 +10,16 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
       background: #000;
+      font-family: 'Arial', sans-serif;
+      color: white;
     }
 
     canvas {
       position: fixed;
       top: 0;
       left: 0;
+      pointer-events: none;
       z-index: -1;
     }
 
@@ -26,21 +28,20 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      text-align: center;
       max-width: 600px;
       width: 90%;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.1);
+      background: rgba(255 255 255 / 0.1);
       border-radius: 20px;
+      padding: 20px;
       backdrop-filter: blur(8px);
-      color: white;
+      text-align: center;
     }
 
     .polaroid {
       background: white;
       padding: 20px 20px 60px 20px;
       border-radius: 15px;
-      box-shadow: 0 0 30px rgba(255,255,255,0.5);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
       cursor: pointer;
       transition: transform 0.3s;
     }
@@ -52,6 +53,8 @@
     .polaroid img {
       width: 100%;
       border-radius: 10px;
+      display: block;
+      margin: 0 auto;
     }
 
     .caption {
@@ -63,14 +66,14 @@
 
     .text-below {
       margin-top: 40px;
-      font-size: 20px;
-      color: white;
+      font-size: 22px;
       line-height: 1.6;
+      color: white;
     }
 
     @media (max-height: 700px) {
       .text-below {
-        font-size: 16px;
+        font-size: 18px;
       }
     }
   </style>
@@ -81,7 +84,7 @@
 
 <div class="container">
   <div class="polaroid" onclick="togglePhoto()">
-    <img id="photo" src="https://i.postimg.cc/HVxrX9W2/pretoebranco.jpg" alt="Foto do casal">
+    <img id="photo" src="https://i.postimg.cc/HVxrX9W2/pretoebranco.jpg" alt="Foto do casal" />
     <div class="caption">clique na foto e veja a mágica ✨</div>
   </div>
   <div class="text-below">
@@ -92,6 +95,7 @@
 <script>
   const canvas = document.getElementById('heartCanvas');
   const ctx = canvas.getContext('2d');
+
   let hearts = [];
   let miniExplosions = [];
 
@@ -99,19 +103,11 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
-
   window.addEventListener('resize', resize);
   resize();
 
   function createHeart(x = Math.random() * canvas.width, y = -20, size = 10 + Math.random() * 20, speed = 1 + Math.random() * 3) {
-    return {
-      x,
-      y,
-      size,
-      speed,
-      alpha: 0.5 + Math.random() * 0.5,
-      explode: false,
-    };
+    return { x, y, size, speed, alpha: 0.5 + Math.random() * 0.5 };
   }
 
   function drawHeart(x, y, size, alpha) {
@@ -151,6 +147,7 @@
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // cria corações caindo
     if (Math.random() < 0.3) {
       hearts.push(createHeart());
     }
@@ -158,7 +155,6 @@
     hearts.forEach((heart, i) => {
       heart.y += heart.speed;
       drawHeart(heart.x, heart.y, heart.size, heart.alpha);
-
       if (heart.y > canvas.height) hearts.splice(i, 1);
     });
 
@@ -169,15 +165,9 @@
         mini.alpha -= 0.02;
         mini.life--;
         drawHeart(mini.x, mini.y, mini.size, mini.alpha);
-
-        if (mini.life <= 0) {
-          group.splice(i, 1);
-        }
+        if (mini.life <= 0) group.splice(i, 1);
       });
-
-      if (group.length === 0) {
-        miniExplosions.splice(groupIndex, 1);
-      }
+      if (group.length === 0) miniExplosions.splice(groupIndex, 1);
     });
 
     requestAnimationFrame(animate);
@@ -197,11 +187,11 @@
 
   let isColor = false;
   function togglePhoto() {
-    const photo = document.getElementById("photo");
+    const photo = document.getElementById('photo');
     if (!isColor) {
-      photo.src = "https://i.postimg.cc/s11zJ6Sv/colorida.jpg";
+      photo.src = 'https://i.postimg.cc/s11zJ6Sv/colorida.jpg';
     } else {
-      photo.src = "https://i.postimg.cc/HVxrX9W2/pretoebranco.jpg";
+      photo.src = 'https://i.postimg.cc/HVxrX9W2/pretoebranco.jpg';
     }
     isColor = !isColor;
   }
